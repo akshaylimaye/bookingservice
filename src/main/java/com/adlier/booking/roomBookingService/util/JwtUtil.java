@@ -57,7 +57,8 @@ public class JwtUtil {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(getSignature()).parseClaimsJwt(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(getSignature()).build().
+                parseClaimsJws(token).getBody();
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolvers) {

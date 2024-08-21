@@ -78,7 +78,7 @@ public class AuthController {
         } catch (BadCredentialsException ex) {
             throw new BadCredentialsException("Incorrect username or password");
         } catch (Exception ex) {
-            System.out.println("Exception ex" + ex);
+            //System.out.println("Exception ex" + ex);
         }
         return  authenticationResponse;
     }

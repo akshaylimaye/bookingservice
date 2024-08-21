@@ -5,6 +5,7 @@ import com.adlier.booking.roomBookingService.dto.UserDto;
 import com.adlier.booking.roomBookingService.entity.User;
 import com.adlier.booking.roomBookingService.enums.UserRole;
 import com.adlier.booking.roomBookingService.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +17,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
 
+    @PostConstruct
     public void createAdminAccount() {
 
         User admin = userRepository.findByUserRole(UserRole.ADMIN);
