@@ -10,4 +10,6 @@ public interface RoomService {
     boolean addRoom(RoomDto roomDto);
 
      RoomsResponseDto getAllRooms(int pageNumber);
+
+    RoomDto getRoomByID(int roomId);
 }

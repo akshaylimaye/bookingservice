@@ -4,6 +4,7 @@ import com.adlier.booking.roomBookingService.dto.RoomDto;
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
 import com.adlier.booking.roomBookingService.entity.Rooms;
 import com.adlier.booking.roomBookingService.repository.RoomRepo;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,5 +54,16 @@ public class RoomServiceImpl implements RoomService{
         }
         responseDto.setRoomList(roomsList);
         return  responseDto;
+    }
+
+    @Override
+    public RoomDto getRoomByID(int roomId) {
+        Optional<Rooms> room = roomRepo.findById(roomId);
+        if(room.isPresent()) {
+            return room.get().getRoomDto();
+        } else {
+          throw new EntityNotFoundException("Room doesn't exist");
+        }
+
     }
 }
