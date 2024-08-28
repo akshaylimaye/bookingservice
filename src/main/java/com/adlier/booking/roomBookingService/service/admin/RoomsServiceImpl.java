@@ -1,4 +1,4 @@
-package com.adlier.booking.roomBookingService.service;
+package com.adlier.booking.roomBookingService.service.admin;
 
 import com.adlier.booking.roomBookingService.dto.RoomDto;
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
@@ -14,11 +14,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class RoomServiceImpl implements RoomService{
+public class RoomsServiceImpl implements RoomsService {
 
     private final RoomRepo roomRepo;
 
@@ -65,5 +64,34 @@ public class RoomServiceImpl implements RoomService{
           throw new EntityNotFoundException("Room doesn't exist");
         }
 
+    }
+
+    @Override
+    public boolean updateRoom(int id, RoomDto roomDto) {
+        Optional<Rooms> room = roomRepo.findById(id);
+        if(room.isPresent()) {
+            Rooms existingRoom = room.get();
+
+            existingRoom.setName(roomDto.getName());
+            existingRoom.setType(roomDto.getType());
+            existingRoom.setPrice(roomDto.getPrice());
+            existingRoom.setAvailable(roomDto.isAvailable());
+            roomRepo.save(existingRoom);
+            return true;
+        } else {
+            throw new EntityNotFoundException("Room doesn't exist");
+        }
+    }
+
+    @Override
+    public boolean deleteRoom(int roomId) {
+        // TODO: 28/08/24   Delete as in change status to 0
+        Optional<Rooms> room = roomRepo.findById(roomId);
+        if(room.isPresent()) {
+            roomRepo.deleteById(roomId);
+            return true;
+        } else {
+            throw new EntityNotFoundException("Room doesn't exist");
+        }
     }
 }

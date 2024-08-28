@@ -1,22 +1,21 @@
-package com.adlier.booking.roomBookingService.controller;
+package com.adlier.booking.roomBookingService.controller.admin;
 
 import com.adlier.booking.roomBookingService.dto.RoomDto;
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
-import com.adlier.booking.roomBookingService.service.RoomService;
+import com.adlier.booking.roomBookingService.service.admin.RoomsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class RoomController {
+@RequestMapping("/admin")
+public class RoomsController {
 
-    private final RoomService service;
+    private final RoomsService service;
 
-    @PostMapping("/admin/add-room")
+    @PostMapping("/room/add-room")
     public ResponseEntity addRoom(@RequestBody RoomDto roomDto) {
         boolean isAdded = service.addRoom(roomDto);
         if(isAdded) {
@@ -38,6 +37,26 @@ public class RoomController {
     public ResponseEntity getRoomById(@PathVariable int roomId) {
         RoomDto room = service.getRoomByID(roomId);
         return new ResponseEntity(room, HttpStatus.OK);
+    }
+
+    @PutMapping("/room/{roomId}")
+    public ResponseEntity updateRoom(@PathVariable int roomId, @RequestBody RoomDto roomDto) {
+        boolean response = service.updateRoom(roomId, roomDto);
+        if(response) {
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } else  {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    @DeleteMapping("/room/{roomId}")
+    public ResponseEntity deleteRoom(@PathVariable int roomId) {
+        boolean response = service.deleteRoom(roomId);
+        if(response) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } else  {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
 }

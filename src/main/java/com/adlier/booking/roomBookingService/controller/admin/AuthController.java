@@ -1,4 +1,4 @@
-package com.adlier.booking.roomBookingService.controller;
+package com.adlier.booking.roomBookingService.controller.admin;
 
 import com.adlier.booking.roomBookingService.dto.AuthenticationRequest;
 import com.adlier.booking.roomBookingService.dto.AuthenticationResponse;
