@@ -1,10 +1,10 @@
-package com.adlier.booking.roomBookingService.service.customer;
+package com.adlier.booking.roomBookingService.service.customer.room;
 
 
 import com.adlier.booking.roomBookingService.dto.RoomDto;
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
 import com.adlier.booking.roomBookingService.entity.Rooms;
-import com.adlier.booking.roomBookingService.repository.RoomRepo;
+import com.adlier.booking.roomBookingService.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,14 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
 
-    private final RoomRepo roomRepo;
+    private final RoomRepository roomRepository;
 
     @Override
     public RoomsResponseDto getAllAvailableRooms(int pageNumber) {
 
         List<RoomDto> roomsList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, 6);
-        Page<Rooms> roomsPage =  roomRepo.findByAvailable(true, pageable);
+        Page<Rooms> roomsPage =  roomRepository.findByAvailable(true, pageable);
         RoomsResponseDto responseDto = new RoomsResponseDto();
         responseDto.setPageNumber(roomsPage.getPageable().getPageNumber());
         responseDto.setTotalPages(roomsPage.getTotalPages());

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface RoomRepo extends JpaRepository<Rooms, Integer> {
+public interface RoomRepository extends JpaRepository<Rooms, Integer> {
 
     Page<Rooms> findByAvailable(boolean available, Pageable pageable);
 }

@@ -3,7 +3,7 @@ package com.adlier.booking.roomBookingService.service.admin;
 import com.adlier.booking.roomBookingService.dto.RoomDto;
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
 import com.adlier.booking.roomBookingService.entity.Rooms;
-import com.adlier.booking.roomBookingService.repository.RoomRepo;
+import com.adlier.booking.roomBookingService.repository.RoomRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoomsServiceImpl implements RoomsService {
 
-    private final RoomRepo roomRepo;
+    private final RoomRepository roomRepository;
 
     public  boolean addRoom(RoomDto roomDto) {
 
@@ -29,7 +29,7 @@ public class RoomsServiceImpl implements RoomsService {
             room.setType(roomDto.getType());
             room.setPrice(roomDto.getPrice());
             room.setName(roomDto.getName());
-            roomRepo.save(room);
+            roomRepository.save(room);
             return true;
         } catch (Exception ex) {
             return false;
@@ -42,8 +42,8 @@ public class RoomsServiceImpl implements RoomsService {
 
         List<RoomDto> roomsList = new ArrayList<>();
         Pageable pageable = PageRequest.of(pageNumber, 6);
-        List<Rooms> rooms = roomRepo.findAll();
-        Page<Rooms> roomsPage =  roomRepo.findAll(pageable);
+        List<Rooms> rooms = roomRepository.findAll();
+        Page<Rooms> roomsPage =  roomRepository.findAll(pageable);
         RoomsResponseDto responseDto = new RoomsResponseDto();
         responseDto.setPageNumber(roomsPage.getPageable().getPageNumber());
         responseDto.setTotalPages(roomsPage.getTotalPages());
@@ -57,7 +57,7 @@ public class RoomsServiceImpl implements RoomsService {
 
     @Override
     public RoomDto getRoomByID(int roomId) {
-        Optional<Rooms> room = roomRepo.findById(roomId);
+        Optional<Rooms> room = roomRepository.findById(roomId);
         if(room.isPresent()) {
             return room.get().getRoomDto();
         } else {
@@ -68,7 +68,7 @@ public class RoomsServiceImpl implements RoomsService {
 
     @Override
     public boolean updateRoom(int id, RoomDto roomDto) {
-        Optional<Rooms> room = roomRepo.findById(id);
+        Optional<Rooms> room = roomRepository.findById(id);
         if(room.isPresent()) {
             Rooms existingRoom = room.get();
 
@@ -76,7 +76,7 @@ public class RoomsServiceImpl implements RoomsService {
             existingRoom.setType(roomDto.getType());
             existingRoom.setPrice(roomDto.getPrice());
             existingRoom.setAvailable(roomDto.isAvailable());
-            roomRepo.save(existingRoom);
+            roomRepository.save(existingRoom);
             return true;
         } else {
             throw new EntityNotFoundException("Room doesn't exist");
@@ -86,9 +86,9 @@ public class RoomsServiceImpl implements RoomsService {
     @Override
     public boolean deleteRoom(int roomId) {
         // TODO: 28/08/24   Delete as in change status to 0
-        Optional<Rooms> room = roomRepo.findById(roomId);
+        Optional<Rooms> room = roomRepository.findById(roomId);
         if(room.isPresent()) {
-            roomRepo.deleteById(roomId);
+            roomRepository.deleteById(roomId);
             return true;
         } else {
             throw new EntityNotFoundException("Room doesn't exist");

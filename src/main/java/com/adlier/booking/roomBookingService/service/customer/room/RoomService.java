@@ -1,4 +1,4 @@
-package com.adlier.booking.roomBookingService.service.customer;
+package com.adlier.booking.roomBookingService.service.customer.room;
 
 import com.adlier.booking.roomBookingService.dto.RoomsResponseDto;
 

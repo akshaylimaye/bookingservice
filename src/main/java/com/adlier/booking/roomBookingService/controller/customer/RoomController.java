@@ -1,6 +1,6 @@
 package com.adlier.booking.roomBookingService.controller.customer;
 
-import com.adlier.booking.roomBookingService.service.customer.RoomService;
+import com.adlier.booking.roomBookingService.service.customer.room.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
