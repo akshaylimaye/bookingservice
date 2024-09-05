@@ -5,7 +5,9 @@ import com.adlier.booking.roomBookingService.dto.ReservationDto;
 import com.adlier.booking.roomBookingService.dto.ReservationResponseDto;
 import com.adlier.booking.roomBookingService.entity.Reservation;
 import com.adlier.booking.roomBookingService.entity.Rooms;
+import com.adlier.booking.roomBookingService.enums.ReservationStatus;
 import com.adlier.booking.roomBookingService.repository.ReservationRepository;
+import com.adlier.booking.roomBookingService.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -21,6 +24,8 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService{
 
     private final ReservationRepository reservationRepository;
+
+    private final RoomRepository roomRepository;
 
     public ReservationResponseDto getAllReservations(int pageNumber) {
 
@@ -40,5 +45,29 @@ public class ReservationServiceImpl implements ReservationService{
         responseDto.setReservationDtoList(reservationDtoList);
         return  responseDto;
 
+    }
+
+    public boolean updateReservationStatus(int id, String status) {
+
+        Optional<Reservation> optionalReservation = reservationRepository.findById(id);
+        if(optionalReservation.isPresent()) {
+            Reservation reservation = optionalReservation.get();
+            if("APPROVED".equals(status)) {
+                reservation.setReservationStatus(ReservationStatus.APPROVED);
+
+                Rooms room = reservation.getRooms();
+                room.setAvailable(false);
+                roomRepository.save(room);
+            } else {
+                reservation.setReservationStatus(ReservationStatus.REJECTED);
+            }
+            reservationRepository.save(reservation);
+
+
+
+
+            return true;
+        }
+        return false;
     }
 }
